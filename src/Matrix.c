@@ -1,14 +1,22 @@
 #include "Matrix.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 struct Matrix {
-    void* impl;
-    // Empty implementation
+    double** vals;
 };
 
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
-    (void)matrix;
-    (void)height;
-    (void)width;
+    matrix = (PMatrix*) malloc(sizeof(PMatrix));
+    
+    (*matrix)->vals = (double**) malloc(sizeof(double*) * height); /*rows*/
+    if((*matrix)->vals == NULL){
+        return -1;
+    }   
+     
+    for(int i = 0 ; i < height ; i++){
+        (*matrix)->vals[i] = (double*) malloc(sizeof(double) * width); /*cols*/
+    }
     return ERROR_NOT_IMPLEMENTED;
 }
 
