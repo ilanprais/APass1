@@ -48,6 +48,7 @@ ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
 
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     
+    *result = source;
     
     return ERROR_SUCCESS;
 }
