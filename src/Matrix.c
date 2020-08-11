@@ -42,7 +42,7 @@ ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
         }
         printf("\n");
     }
-  
+    
     return ERROR_SUCCESS;
  }
 
