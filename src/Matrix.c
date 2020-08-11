@@ -7,29 +7,49 @@ struct Matrix {
 };
 
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
-    matrix = (PMatrix*) malloc(sizeof(PMatrix));
-    (*matrix) = (PMatrix) malloc(sizeof(matrix));
-
-    (*matrix)->vals = (double**)malloc(sizeof(double*) * height); /*rows*/
+      
+    PMatrix temp = (PMatrix) malloc(sizeof(**matrix));
+    temp->vals = (double**)malloc(sizeof(double*) * height); 
     
-    if((*matrix)->vals == NULL){
+    if(temp->vals == NULL){
         return -1;
     }   
     
     for(int i = 0 ; i < height ; i++){
-        (*matrix)->vals[i] = (double*) malloc(sizeof(double) * width); /*cols*/
-         if((*matrix)->vals[i] == NULL){
+        temp->vals[i] = (double*) malloc(sizeof(double) * width); 
+         if(temp->vals[i] == NULL){
             return -1;
         }   
     }
+
+    *matrix = temp;
     
-    return ERROR_NOT_IMPLEMENTED;
+    for(int i = 0; i < height ; i++){
+        for(int j = 0; j < width ; j++){
+            (*matrix)->vals[i][j] = 0;
+        }
+    }
+    
+      return ERROR_SUCCESS;
 }
 
+ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
+
+    for(int i = 0; i < height ; i++){
+        for(int j = 0; j < width ; j++){
+            double val = matrix->vals[i][j];
+            printf("%f ", val);
+        }
+        printf("\n");
+    }
+  
+    return ERROR_SUCCESS;
+ }
+
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
-    (void)result;
-    (void)source;
-    return ERROR_NOT_IMPLEMENTED;
+    
+    
+    return ERROR_SUCCESS;
 }
 
 void matrix_destroy(PMatrix matrix) { (void)matrix; }
