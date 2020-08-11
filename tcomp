@@ -1,0 +1,1 @@
+cd "/home/ilan/aphw/ass1/APass1/src/" && gcc main.c Matrix.c ErrorCode.c -o main && "/home/ilan/aphw/ass1/APass1/src/"main
