@@ -8,15 +8,21 @@ struct Matrix {
 
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
     matrix = (PMatrix*) malloc(sizeof(PMatrix));
+    (*matrix) = (PMatrix) malloc(sizeof(matrix));
+
+    (*matrix)->vals = (double**)malloc(sizeof(double*) * height); /*rows*/
     
-    (*matrix)->vals = (double**) malloc(sizeof(double*) * height); /*rows*/
     if((*matrix)->vals == NULL){
         return -1;
     }   
-     
+    
     for(int i = 0 ; i < height ; i++){
         (*matrix)->vals[i] = (double*) malloc(sizeof(double) * width); /*cols*/
+         if((*matrix)->vals[i] == NULL){
+            return -1;
+        }   
     }
+    
     return ERROR_NOT_IMPLEMENTED;
 }
 
