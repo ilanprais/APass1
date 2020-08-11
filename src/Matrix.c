@@ -42,13 +42,21 @@ ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
         }
         printf("\n");
     }
-    
+
     return ERROR_SUCCESS;
  }
 
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     
-    *result = source;
+    uint32_t height = 0;
+    uint32_t width = 0;
+    matrix_create(result, matrix_getHeight(source, &height), matrix_getWidth(source, &width));
+
+    for(int i = 0; i < height ; i++){
+        for(int j = 0; j < width ; j++){
+           (*result)->vals[i][j] = source->vals[i][j];
+        }
+    }
     
     return ERROR_SUCCESS;
 }
