@@ -6,7 +6,10 @@
 
 int main(){
 
-    ErrorCode ec = ERROR_SUCCESS;
-    printf("%d\n", error_isSuccess(ec));
+    PMatrix *p;
+    matrix_create(p, 5, 5);
+
+    printf("%d\n", 2);
+
     return 0;
 }
