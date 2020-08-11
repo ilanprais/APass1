@@ -4,6 +4,8 @@
 
 struct Matrix {
     double** vals;
+    int height;
+    int width;
 };
 
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
@@ -21,6 +23,9 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
             return -1;
         }   
     }
+
+    temp->height = height;
+    temp->width = width;
 
     *matrix = temp;
     
@@ -50,7 +55,10 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     
     uint32_t height = 0;
     uint32_t width = 0;
-    matrix_create(result, matrix_getHeight(source, &height), matrix_getWidth(source, &width));
+    matrix_getHeight(source, &height);
+    matrix_getWidth(source, &width);
+
+    matrix_create(result, height, width);
 
     for(int i = 0; i < height ; i++){
         for(int j = 0; j < width ; j++){
@@ -64,14 +72,14 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 void matrix_destroy(PMatrix matrix) { (void)matrix; }
 
 ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
-    (void)matrix;
-    (void)result;
+    *result = matrix->height;
+
     return ERROR_NOT_IMPLEMENTED;
 }
 
 ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
-    (void)matrix;
-    (void)result;
+     *result = matrix->width;
+
     return ERROR_NOT_IMPLEMENTED;
 }
 
