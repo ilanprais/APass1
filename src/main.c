@@ -6,10 +6,16 @@
 
 int main(){
 
-    PMatrix *p;
-    matrix_create(p, 5, 5);
+    PMatrix matrix = NULL;
+    PMatrix other = NULL;
+    matrix_create(&matrix, 5, 5);
 
-    printf("%d\n", 2);
+    matrix_print(matrix, 5, 5);
+
+    matrix_copy(&other, matrix);
+
+    printf("\n");
+    matrix_print(other, 5, 5);
 
     return 0;
 }
