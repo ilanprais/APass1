@@ -133,10 +133,28 @@ ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
 }
 
 ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
-    (void)result;
-    (void)lhs;
-    (void)rhs;
-    return ERROR_NOT_IMPLEMENTED;
+    
+    if(lhs == NULL || rhs == NULL){
+        return -1;
+    }
+
+    if(lhs->height != rhs->height || lhs->width != rhs->width){
+        return -1;
+    }
+
+    matrix_create(result, rhs->height, rhs->width);
+
+    for(int i = 0; i < rhs->height ; i++){
+        for(int j = 0; j < rhs->width ; j++){
+           double a;
+           double b;
+           matrix_getValue(lhs, i, j, &a);
+           matrix_getValue(rhs, i, j, &b);
+           matrix_setValue(*result, i, j, a + b);
+        }
+    }
+
+    return ERROR_SUCCESS;
 }
 
 ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
@@ -147,7 +165,15 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
 }
 
 ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
-    (void)matrix;
-    (void)scalar;
-    return ERROR_NOT_IMPLEMENTED;
+
+    for(int i = 0; i < matrix->height ; i++){
+        for(int j = 0; j < matrix->width ; j++){
+           double a;
+           matrix_getValue(matrix, i, j, &a);
+           a = a * scalar;
+           matrix_setValue(matrix, i, j, a);
+        }
+    }
+
+    return ERROR_SUCCESS;
 }
