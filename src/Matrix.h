@@ -118,4 +118,4 @@ ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar);
  *
  * @param[in, out] matrix On input, the matrix to print.
  */
-ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width);
+ErrorCode matrix_print(CPMatrix matrix);
