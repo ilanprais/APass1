@@ -14,13 +14,13 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
     temp->vals = (double**)malloc(sizeof(double*) * height); 
     
     if(temp->vals == NULL){
-        return -1;
+        return ERROR_FAILED_ALLOCATION;
     }   
     
     for(int i = 0 ; i < height ; ++i){
         temp->vals[i] = (double*) malloc(sizeof(double) * width); 
          if(temp->vals[i] == NULL){
-            return -1;
+            return ERROR_FAILED_ALLOCATION;
         }   
     }
 
@@ -41,7 +41,7 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
 ErrorCode matrix_print(CPMatrix matrix){
 
     if(matrix == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
     for(int i = 0; i < matrix->height ; ++i){
@@ -59,7 +59,7 @@ ErrorCode matrix_print(CPMatrix matrix){
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 
     if(source == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
     
     uint32_t height = 0;
@@ -80,6 +80,10 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 
 void matrix_destroy(PMatrix matrix) {
 
+    if(matrix == NULL){
+        return;
+    }
+
     for(int i = 0 ; i < matrix->height ; ++i){
         free(matrix->vals[i]);   
     }
@@ -91,7 +95,7 @@ void matrix_destroy(PMatrix matrix) {
 ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
     
     if(matrix == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
     *result = matrix->height;
@@ -102,7 +106,7 @@ ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
 ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
 
     if(matrix == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
     *result = matrix->width;
@@ -113,7 +117,7 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
 ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
                           double value) {
     if(matrix == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
     matrix->vals[rowIndex][colIndex] = value;
@@ -124,7 +128,11 @@ ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
 ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
                           double* value) {
     if(matrix == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
+    }
+
+    if(value == NULL){
+        return ERROR_OUTPUT_MISSING;
     }
 
     *value = matrix->vals[rowIndex][colIndex];
@@ -135,14 +143,17 @@ ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
 ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
     
     if(lhs == NULL || rhs == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
     if(lhs->height != rhs->height || lhs->width != rhs->width){
-        return -1;
+        return ERROR_MATRIX_INCOMPATIBLE;
     }
 
-    matrix_create(result, rhs->height, rhs->width);
+    ErrorCode err = matrix_create(result, rhs->height, rhs->width);
+    if(err != 0){
+        return err;
+    }
 
     for(int i = 0; i < rhs->height ; ++i){
         for(int j = 0; j < rhs->width ; ++j){
@@ -160,15 +171,18 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
 ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
 
     if(lhs == NULL || rhs == NULL){
-        return -1;
+        return ERROR_MATRIX_MISSING;
     }
 
 
     if(lhs->width != rhs->height){
-        return -1;
+        return ERROR_MATRIX_INCOMPATIBLE;
     }
 
-    matrix_create(result, lhs->height, rhs->width);
+    ErrorCode err = matrix_create(result, lhs->height, rhs->width);
+    if(err != 0){
+        return err;
+    }
 
     for (int i = 0; i < lhs->height; ++i) {
       for (int j = 0; j < rhs->width; ++j) {
@@ -189,6 +203,10 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
 }
 
 ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
+
+    if(matrix == NULL){
+        return ERROR_MATRIX_MISSING;
+    }
 
     for(int i = 0; i < matrix->height ; ++i){
         for(int j = 0; j < matrix->width ; ++j){
