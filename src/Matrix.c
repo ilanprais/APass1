@@ -40,6 +40,10 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
 
 ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
 
+    if(matrix == NULL){
+        return -1;
+    }
+
     for(int i = 0; i < height ; i++){
         for(int j = 0; j < width ; j++){
             double val = matrix->vals[i][j];
@@ -47,11 +51,16 @@ ErrorCode matrix_print(PMatrix matrix, uint32_t height, uint32_t width){
         }
         printf("\n");
     }
+    printf("\n");
 
     return ERROR_SUCCESS;
  }
 
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
+
+    if(source == NULL){
+        return -1;
+    }
     
     uint32_t height = 0;
     uint32_t width = 0;
@@ -72,15 +81,25 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 void matrix_destroy(PMatrix matrix) { (void)matrix; }
 
 ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
+    
+    if(matrix == NULL){
+        return -1;
+    }
+
     *result = matrix->height;
 
-    return ERROR_NOT_IMPLEMENTED;
+    return ERROR_SUCCESS;
 }
 
 ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
+
+    if(matrix == NULL){
+        return -1;
+    }
+
      *result = matrix->width;
 
-    return ERROR_NOT_IMPLEMENTED;
+    return ERROR_SUCCESS;
 }
 
 ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
