@@ -112,3 +112,10 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs);
  * @return ErrorCode
  */
 ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar);
+
+/**
+ * @brief Prints a matrix into the console.
+ *
+ * @param[in, out] matrix On input, the matrix to print.
+ */
+ErrorCode matrix_print(CPMatrix matrix);
