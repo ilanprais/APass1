@@ -17,7 +17,7 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
         return ERROR_FAILED_ALLOCATION;
     }   
     
-    for(int i = 0 ; i < height ; ++i){
+    for(uint32_t i = 0 ; i < height ; ++i){
         temp->vals[i] = (double*) malloc(sizeof(double) * width); 
          if(temp->vals[i] == NULL){
             return ERROR_FAILED_ALLOCATION;
@@ -29,8 +29,8 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
 
     *matrix = temp;
     
-    for(int i = 0; i < height ; ++i){
-        for(int j = 0; j < width ; ++j){
+    for(uint32_t i = 0; i < height ; ++i){
+        for(uint32_t j = 0; j < width ; ++j){
             (*matrix)->vals[i][j] = 0;
         }
     }
@@ -69,8 +69,8 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 
     matrix_create(result, height, width);
 
-    for(int i = 0; i < height ; ++i){
-        for(int j = 0; j < width ; ++j){
+    for(uint32_t i = 0; i < height ; ++i){
+        for(uint32_t j = 0; j < width ; ++j){
            (*result)->vals[i][j] = source->vals[i][j];
         }
     }
