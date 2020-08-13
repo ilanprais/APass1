@@ -51,6 +51,3 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-#CMake auto generated files
-build/
-.vscode/
