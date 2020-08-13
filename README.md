@@ -50,6 +50,11 @@ ErrorCode matrix_print(CPMatrix matrix);
 ```
 This function will print the matrix in a visual format on the console.
 
+**As well as the matrix functions, an ErrorCode system was written:**
+Each function return an error code according to the result
+(memory allocation fail, success, etc.) and the **error_getErrorMessage** function returns the textual error message for a given error code.
+
+This system allows us to handle errors in an efficient way.
 
 ## Details
 the code was written by Ilan Prais
