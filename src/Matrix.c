@@ -9,6 +9,14 @@ struct Matrix {
 };
 
 ErrorCode matrix_create(PMatrix* matrix, const uint32_t height, const uint32_t width) {
+
+    if(height < 0 || width < 0){
+        return ERROR_MATRIX_INCOMPATIBLE;
+    }
+
+    if(matrix == NULL){
+        return ERROR_MATRIX_MISSING;
+    }
       
     PMatrix temp = (PMatrix) malloc(sizeof(**matrix));
     temp->vals = (double**)malloc(sizeof(double*) * height); 
@@ -24,7 +32,6 @@ ErrorCode matrix_create(PMatrix* matrix, const uint32_t height, const uint32_t w
             for(uint32_t j = 0 ; j < i ; ++j){
                  free(temp->vals[i]);   
             }
-
             free(temp->vals);
             free(matrix);
             return ERROR_FAILED_ALLOCATION;
@@ -65,7 +72,7 @@ ErrorCode matrix_print(CPMatrix matrix){
 
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
 
-    if(source == NULL){
+    if(source == NULL || result == NULL){
         return ERROR_MATRIX_MISSING;
     }
     
@@ -106,6 +113,10 @@ ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
         return ERROR_MATRIX_MISSING;
     }
 
+    if(result ==  NULL){
+        return ERROR_OUTPUT_MISSING;
+    }
+
     *result = matrix->height;
 
     return ERROR_SUCCESS;
@@ -115,6 +126,10 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
 
     if(matrix == NULL){
         return ERROR_MATRIX_MISSING;
+    }
+
+     if(result == NULL){
+        return ERROR_OUTPUT_MISSING;
     }
 
     *result = matrix->width;
@@ -135,6 +150,11 @@ ErrorCode matrix_setValue(PMatrix matrix, const uint32_t rowIndex, const uint32_
 
 ErrorCode matrix_getValue(CPMatrix matrix, const uint32_t rowIndex, const uint32_t colIndex,
                           double* value) {
+
+    if(rowIndex < 0 || colIndex < 0){
+        return ERROR_MATRIX_INCOMPATIBLE;
+    }
+
     if(matrix == NULL){
         return ERROR_MATRIX_MISSING;
     }
@@ -150,7 +170,7 @@ ErrorCode matrix_getValue(CPMatrix matrix, const uint32_t rowIndex, const uint32
 
 ErrorCode matrix_add(PMatrix* result, CPMatrix leftMatrix, CPMatrix rightMatrix) {
     
-    if(leftMatrix == NULL || rightMatrix == NULL){
+    if(leftMatrix == NULL || rightMatrix == NULL || result == NULL){
         return ERROR_MATRIX_MISSING;
     }
 
@@ -176,7 +196,7 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix leftMatrix, CPMatrix rightMatrix)
 
 ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix leftMatrix, CPMatrix rightMatrix) {
 
-    if(leftMatrix == NULL || rightMatrix == NULL){
+    if(leftMatrix == NULL || rightMatrix == NULL || result == NULL){
         return ERROR_MATRIX_MISSING;
     }
 
